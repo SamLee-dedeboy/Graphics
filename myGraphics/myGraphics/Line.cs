@@ -42,6 +42,10 @@ namespace myGraphics
                                             sine,
                                             cosine);
         }
+        public override void fill(Color color, ref Graphics g)
+        {
+            return;
+        }
         public override Shape shift(int x, int y)
         {
             //return new Line(new Point(this.startPoint.X + x, this.startPoint.Y + y), new Point(this.endPoint.X + x, this.endPoint.Y + y));
@@ -81,6 +85,7 @@ namespace myGraphics
                 for(; x <= endPoint.X; x++)
                 {
                     Shape.drawPoint(hdc, new Point(x, y), ref g);
+                    this.border_list.Add(new Point(x,y));
                 }
                 return;
             }
@@ -96,6 +101,7 @@ namespace myGraphics
                 {
 
                     Shape.drawPoint(hdc, new Point(x, y), ref g);
+                    this.border_list.Add(new Point(x, y));
                     if (p >= 0)
                     {
                         if (k > 0)
@@ -126,6 +132,7 @@ namespace myGraphics
             {
 
                 Shape.drawPoint(hdc, new Point(x, y), ref g);
+                this.border_list.Add(new Point(x, y));
                 if (p >= 0)
                 {
                     if (k > 0)

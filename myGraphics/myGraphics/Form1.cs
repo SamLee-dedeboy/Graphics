@@ -36,6 +36,7 @@ namespace myGraphics
         Shape temp_shape;
         bool start = false; // record the start of a drawing
         double sine = 0, cosine = 1;
+        Color fill_color = Color.Black;
         public Form1()
         {
          
@@ -494,13 +495,22 @@ namespace myGraphics
         {
             sel = 4;
         }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            g = pictureBox1.CreateGraphics();
+            manager.shapeList.Last().fill(fill_color, ref g);
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (this.colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                fill_color = colorDialog1.Color;
+            }
+        }
 
         public static Point ConvertPoint(Point p)
         {
-            Point res_p = new Point();
-            res_p.X = p.X + COOR_WIDTH;
-            res_p.Y = COOR_HEIGHT / 2 - p.Y;
-            return res_p;
+            return new Point(p.X + COOR_WIDTH, COOR_HEIGHT / 2 - p.Y);
         }
         public static Point ReverseConvertPoint(Point p)
         {
@@ -510,6 +520,17 @@ namespace myGraphics
             return res_p;
 
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
         public static void drawCoordinate(PictureBox picturebox1, ref Graphics g)
         {

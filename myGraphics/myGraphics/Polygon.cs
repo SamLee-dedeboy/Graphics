@@ -42,6 +42,16 @@ namespace myGraphics
             delta_y /= point_list.Count;
             internal_center = new Point(center_x + delta_x, center_y + delta_y);
         }
+        public override void fill(Color color, ref Graphics g)
+        {
+            List<Point> converted_point_list = new List<Point>();
+            for(int i = 0; i < point_list.Count; i++)
+            {
+                converted_point_list.Add(Form1.ConvertPoint(point_list[i]));
+            }
+            g.FillPolygon(new SolidBrush(color), converted_point_list.ToArray());
+        }
+    
         public override Shape shift(int x, int y)
         {
             List<Point> shifted_point_list = new List<Point>();

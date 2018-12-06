@@ -15,6 +15,11 @@ namespace myGraphics
             center = s;
             radius = r;
         }
+        public override void fill(Color color, ref Graphics g)
+        {
+            Point start_point = Form1.ConvertPoint(new Point((int)(center.X - radius), (int)(center.Y + radius)));
+            g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)radius, 2*(float)radius);
+        }
         public override Shape shift(int x, int y)
         {
             //return new Circle(new Point(this.center.X + x, this.center.Y + y), this.radius);

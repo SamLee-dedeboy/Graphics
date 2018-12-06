@@ -67,6 +67,11 @@ namespace myGraphics
             p4 = Transform.Rotate(p4, center, sine, cosine);
             rotate_point = Transform.Rotate(new Point(center.X, center.Y + rotate_point_offset), center, this.sine, this.cosine);
         }
+        public override void fill(Color color, ref Graphics g)
+        {
+            Point start_point = Form1.ConvertPoint(new Point((int)(center.X - a), (int)(center.Y + b)));
+            g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)a, 2*(float)b);
+        }
         public override Shape shift(int x, int y)
         {
             // return new Ellipse(new Point(this.center.X + x, this.center.Y + y), this.a, this.b);

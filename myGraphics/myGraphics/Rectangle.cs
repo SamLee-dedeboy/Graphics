@@ -50,6 +50,22 @@ namespace myGraphics
             p4 = Transform.Rotate(p4, center, sine, cosine);
             rotate_point = Transform.Rotate(rotate_point, center, sine, cosine);
         }
+        public override void fill(Color color, ref Graphics g)
+        {
+            if (p1.X < p3.X)
+            {
+            
+                Point start_point = Form1.ConvertPoint(p1);
+                g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p2.X - p1.X, p1.Y - p4.Y);
+            }
+            else
+            {
+                Point start_point = Form1.ConvertPoint(p4);
+                g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p1.X - p4.X, p4.Y - p3.Y);
+            }
+            
+        }
+       
         public override Shape shift(int x, int y)
         {
             // return new Rectangle(new Point(this.p1.X + x, this.p1.Y + y), new Point(this.p3.X + x, this.p3.Y + y));
@@ -116,6 +132,11 @@ namespace myGraphics
             line2.Draw(hdc, ref g);
             line3.Draw(hdc, ref g);
             line4.Draw(hdc, ref g);
+
+            this.border_list.AddRange(line1.border_list);
+            this.border_list.AddRange(line2.border_list);
+            this.border_list.AddRange(line3.border_list);
+            this.border_list.AddRange(line4.border_list);
         }
     }
 }
