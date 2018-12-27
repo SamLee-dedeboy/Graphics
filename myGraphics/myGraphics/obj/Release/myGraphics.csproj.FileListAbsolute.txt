@@ -1,0 +1,10 @@
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\bin\Release\myGraphics.exe.config
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\bin\Release\myGraphics.exe
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\bin\Release\myGraphics.pdb
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.Form1.resources
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.Properties.Resources.resources
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.csproj.GenerateResource.Cache
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.csproj.CoreCompileInputs.cache
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.exe
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.pdb
+D:\Visual Studio\Projects\myGraphics\myGraphics\myGraphics\obj\Release\myGraphics.csprojResolveAssemblyReference.cache
