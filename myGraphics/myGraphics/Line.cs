@@ -41,6 +41,7 @@ namespace myGraphics
                                             center,
                                             sine,
                                             cosine);
+            setBorderList();
         }
         public override void fill(Color color, ref Graphics g)
         {
@@ -151,6 +152,7 @@ namespace myGraphics
                 }
             }
         }
+       
         public override Point other_point(Point selected_point)
         {
             if(selected_point == this.startPoint)
@@ -167,17 +169,50 @@ namespace myGraphics
         {
             if(inRec(rec, startPoint) && inRec(rec, endPoint))
             {
+                return this;
+            }
+            //Cohen- sutherland 
+            bool x1, x2, x3, x4, y1, y2, y3, y4;
+            x1 = startPoint.X < rec.getP1().X;
+            x2 = startPoint.X > rec.getP2().X;
+            x3 = startPoint.Y < rec.getP3().Y;
+            x4 = startPoint.Y > rec.getP1().Y;
+
+            y1 = endPoint.X < rec.getP1().X;
+            y2 = endPoint.X > rec.getP2().X;
+            y3 = endPoint.Y < rec.getP3().Y;
+            y4 = endPoint.Y > rec.getP1().Y;
+            if ((x1 || x2 || x3 || x4 || y1 || y2 || y3 || y4) == false) //0000, 0000
+            {
+                return this;
+            }
+            else if ((x1 && y1) || (x2 && y2) || (x3 && y3) || (x4 && y4))   //x1x2x3x4 | y1y2y3y4 != 0000
+            {
                 return null;
             }
-            if (!inRec(rec, startPoint) && !inRec(rec, endPoint))
-                return this;
-            Point interSectPoint = findIntersection(rec);
-            if (!inRec(rec, startPoint))  //reserve startPoint - interSection
-            {
-                return new Line(startPoint, interSectPoint);
-            }
             else
-                return new Line(endPoint, interSectPoint);
+            {
+                if (!inRec(rec, startPoint) && !inRec(rec, endPoint))   // both ends are out of rectangle
+                {
+                    Point interSectPoint = findIntersection(rec);   //one end is in rectangle, the other is out of rectangle
+                    if (!inRec(rec, startPoint))  //reserve startPoint - interSection
+                    {
+                        return new Line(endPoint, interSectPoint).cut(rec);
+                    }
+                    else
+                        return new Line(startPoint, interSectPoint).cut(rec);
+                }
+                else
+                {
+                    Point interSectPoint = findIntersection(rec);   //one end is in rectangle, the other is out of rectangle
+                    if (!inRec(rec, startPoint))  //reserve startPoint - interSection
+                    {
+                        return new Line(endPoint, interSectPoint);
+                    }
+                    else
+                        return new Line(startPoint, interSectPoint);
+                }
+            }
         }
         private Boolean inRec(Rectangle rec, Point p)
         {
@@ -210,6 +245,84 @@ namespace myGraphics
                 //this.border_list.Add(new Point(x, y));
             }
                 return lastPoint;
+        }
+        private void setBorderList()
+        {
+            //initialization
+            int x, y, dx, dy, p;
+            x = startPoint.X;
+            y = startPoint.Y;
+            if (k == 0)
+            {
+                for (; x <= endPoint.X; x++)
+                {
+                    //Shape.drawPoint(hdc, new Point(x, y), ref g);
+                    this.border_list.Add(new Point(x, y));
+                }
+                return;
+            }
+            // |k| < 1
+            if (Math.Abs(k) < 1)
+            {
+
+                dx = endPoint.X - x;
+                dy = Math.Abs(endPoint.Y - y);
+                p = 2 * dy - dx;
+
+                for (; x <= endPoint.X; x++)
+                {
+
+                    //Shape.drawPoint(hdc, new Point(x, y), ref g);
+                    this.border_list.Add(new Point(x, y));
+                    if (p >= 0)
+                    {
+                        if (k > 0)
+                        {
+                            y++;
+
+                        }
+                        else
+                        {
+                            y--;
+
+                        }
+                        p += 2 * (dy - dx);
+                    }
+                    else
+                    {
+                        p += 2 * dy;
+                    }
+                }
+                return;
+            }
+            // |k| > 1
+            dx = Math.Abs(endPoint.X - x);
+            dy = Math.Abs(endPoint.Y - y);
+            p = 2 * dx - dy;
+
+            for (; y <= endPoint.Y; y++)
+            {
+
+                //Shape.drawPoint(hdc, new Point(x, y), ref g);
+                this.border_list.Add(new Point(x, y));
+                if (p >= 0)
+                {
+                    if (k > 0)
+                    {
+                        x++;
+                    }
+                    else
+                    {
+                        x--;
+                    }
+                    p += 2 * (dx - dy);
+                }
+                else
+                {
+                    p += 2 * dx;
+                }
+            }
+
         }
         private Point higher_point()
         {
