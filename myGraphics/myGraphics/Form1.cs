@@ -27,7 +27,7 @@ namespace myGraphics
         //6 = move or rotate
         SEL sel = SEL.DEFAULT;
         SEL last_sel;
-
+        bool cut = false;
         bool rotate = false;
         int select_point_range = 10;
         Point start_point, end_point;
@@ -97,8 +97,9 @@ namespace myGraphics
             {
                 for (int i = 0; i < point_list.Count; i++)
                 {
-                    Shape.drawPoint(g.GetHdc(), point_list[i], ref g);
-                    g.ReleaseHdc();
+                    g.FillEllipse(Brushes.Black, new Point(ConvertPoint(point_list[i]).X, ConvertPoint(point_list[i]).Y).X,
+                                                    new Point(ConvertPoint(point_list[i]).X, ConvertPoint(point_list[i]).Y).Y, 4,4);
+                   
                 }
 
             }
@@ -254,6 +255,8 @@ namespace myGraphics
                         g.ReleaseHdc();
                     }
                     point_list.Clear();
+                    pictureBox1.Refresh();
+                    g = pictureBox1.CreateGraphics();
                     start = false;
                     last_sel = sel;
                     sel = SEL.EDIT;
@@ -274,6 +277,8 @@ namespace myGraphics
                 g = pictureBox1.CreateGraphics();
                 if (!start)
                 {
+                    sine = 0;
+                    cosine = 1;
                     start_point = ReverseConvertPoint(new Point(e.X, e.Y));
                     start = true;
                     if (sel == SEL.EDIT)
@@ -332,9 +337,29 @@ namespace myGraphics
                             break;
                         case SEL.RECTANGLE:
                             Rectangle rectangle = new Rectangle(start_point, end_point, sine, cosine);
-                            manager.addShape(rectangle);
-                            rectangle.Draw(g.GetHdc(), ref g);
-                            g.ReleaseHdc();
+                            if (!cut)
+                            {
+                                manager.addShape(rectangle);
+                                rectangle.Draw(g.GetHdc(), ref g);
+                                g.ReleaseHdc();
+                            } else
+                            {
+                                if (manager.shapeList.Last().type == SEL.LINE)
+                                {
+                                    Line cuttedLine = ((Line)manager.shapeList.Last()).cut(rectangle);
+                                    manager.shapeList.RemoveAt(manager.shapeList.Count - 1);
+                                    pictureBox1.Refresh();
+                                    g = pictureBox1.CreateGraphics();
+                                    if (cuttedLine != null)
+                                    {
+                                        manager.shapeList.Add(cuttedLine);
+                                        cuttedLine.Draw(g.GetHdc(), ref g);
+                                        g.ReleaseHdc();
+                                    }
+                                }
+                                cut = false;
+                             
+                            }
                             start = false;
                             break;
                         case SEL.POLYGON:
@@ -345,8 +370,8 @@ namespace myGraphics
                             point_list.Add(end_point);
                             break;
                         case SEL.BEZIER:
-                            g.FillEllipse(Brushes.Black, ConvertPoint(new Point(end_point.X, end_point.Y)).X,
-                                                    ConvertPoint(new Point(end_point.X, end_point.Y)).Y, (float)20, (float)20);
+                            g.FillEllipse(Brushes.Black, new Point(e.X, e.Y).X,
+                                                   new Point(e.X, e.Y).Y, 10, 10);
 
                             point_list.Add(end_point);
                             break;
@@ -427,11 +452,14 @@ namespace myGraphics
                     //edit part
                     if (!start)
                     {
-
-                        last_sel = manager.shapeList.Last().type;
-                        sel = SEL.EDIT;
-                        highlight_point = manager.shapeList.Last().highlight(ref g);
-
+                        if (manager.shapeList.Count != 0)
+                        {
+                            last_sel = manager.shapeList.Last().type;
+                            sel = SEL.EDIT;
+                            highlight_point = manager.shapeList.Last().highlight(ref g);
+                        }
+                        else
+                            sel = SEL.DEFAULT;
                     }
                     g.Dispose();
                 }
@@ -612,6 +640,12 @@ namespace myGraphics
             sel = SEL.BEZIER;
          //   g = pictureBox1.CreateGraphics();
           //  ((Polygon)manager.shapeList.Last()).drawBezier(g.GetHdc(), ref g);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            sel = SEL.RECTANGLE;
+            cut = true;
         }
 
         public static void drawCoordinate(PictureBox picturebox1, ref Graphics g)

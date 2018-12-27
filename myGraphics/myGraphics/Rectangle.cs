@@ -142,5 +142,35 @@ namespace myGraphics
             this.border_list.AddRange(line3.border_list);
             this.border_list.AddRange(line4.border_list);
         }
+        public Point getP1()
+        {
+            if (p1.X < p3.X)
+            {
+                return p1;
+            }
+            else
+                return p4;
+        }
+        public Point getP2()
+        {
+            if (p1.X < p3.X)
+                return p2;
+            else
+                return p1;
+        }
+        public Point getP3()
+        {
+            if (p1.X < p3.X)
+                return p3;
+            else
+                return p2;
+        }
+        public Point getP4()
+        {
+            if (p1.X < p3.X)
+                return p4;
+            else
+                return p3;
+        }
     }
 }

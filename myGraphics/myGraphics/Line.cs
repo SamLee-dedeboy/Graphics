@@ -163,6 +163,54 @@ namespace myGraphics
             }
             
         }
+        public Line cut(Rectangle rec)
+        {
+            if(inRec(rec, startPoint) && inRec(rec, endPoint))
+            {
+                return null;
+            }
+            if (!inRec(rec, startPoint) && !inRec(rec, endPoint))
+                return this;
+            Point interSectPoint = findIntersection(rec);
+            if (!inRec(rec, startPoint))  //reserve startPoint - interSection
+            {
+                return new Line(startPoint, interSectPoint);
+            }
+            else
+                return new Line(endPoint, interSectPoint);
+        }
+        private Boolean inRec(Rectangle rec, Point p)
+        {
+            return (p.X > rec.getP1().X && p.X < rec.getP2().X && p.Y > rec.getP3().Y && p.Y < rec.getP2().Y);
+        }
+        private Point findIntersection(Rectangle rec)
+        {
+            Point lastPoint = new Point(border_list[0].X, border_list[0].Y);
+            
+            Boolean inToOut = inRec(rec, border_list[0]);
+            for (int i = 0; i < border_list.Count; i++)
+            {
+           
+                if (inToOut)
+                {
+                    if (!inRec(rec, border_list[i]))
+                    {
+                        lastPoint = new Point(border_list[i].X, border_list[i].Y);
+                        break;
+                    }
+                }
+                else
+                {
+                    if (inRec(rec, border_list[i]))
+                    {
+                        lastPoint = new Point(border_list[i].X, border_list[i].Y);
+                        break;
+                    }
+                }
+                //this.border_list.Add(new Point(x, y));
+            }
+                return lastPoint;
+        }
         private Point higher_point()
         {
             if (startPoint.Y >= endPoint.Y)
