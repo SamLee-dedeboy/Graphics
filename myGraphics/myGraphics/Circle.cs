@@ -11,12 +11,13 @@ namespace myGraphics
         private double radius;
         public Circle(Point s, double r)
         {
-            type = 3;
+            type = SEL.CIRCLE;
             center = s;
             radius = r;
         }
         public override void fill(Color color, ref Graphics g)
         {
+            this.color = color;
             Point start_point = Form1.ConvertPoint(new Point((int)(center.X - radius), (int)(center.Y + radius)));
             g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)radius, 2*(float)radius);
         }

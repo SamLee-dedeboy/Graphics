@@ -10,9 +10,12 @@ namespace myGraphics
 {
     public abstract class Shape
     {
-        public int type;
+        
+        public SEL type;
         public double sine = 0;
         public double cosine = 1;
+        public bool fill_flag = false;
+        public Color color = Color.Black;
         public Point center;
         public Point rotate_point;
         public const int rotate_point_offset = 20;
@@ -64,5 +67,5 @@ namespace myGraphics
         
 
     }
-
+    public enum SEL { DEFAULT, LINE, RECTANGLE, POLYGON, BEZIER, CIRCLE, ELLIPSE, EDIT, MOVE_ROTATE };
 }

@@ -15,7 +15,7 @@ namespace myGraphics
         {
             this.sine = sine;
             this.cosine = cosine;
-            type = 2;
+            type = SEL.POLYGON;
             int center_x = 0, center_y = 0;
             point_list = new List<Point>();
             point_list.AddRange(p_list);
@@ -44,6 +44,7 @@ namespace myGraphics
         }
         public override void fill(Color color, ref Graphics g)
         {
+            this.color = color;
             List<Point> converted_point_list = new List<Point>();
             for(int i = 0; i < point_list.Count; i++)
             {
@@ -102,6 +103,50 @@ namespace myGraphics
             }
             Line last_line = new Line(point_list[point_list.Count - 1], point_list[0]);
             last_line.Draw(hdc, ref g);
+        }
+        public void drawBezier(IntPtr hdc, ref Graphics g)
+        {
+            float step = 0.0001F;
+            List<Point> bezier_curves_points = new List<Point>();
+            float t = 0F;
+            do
+            {
+                Point temp_point = bezier_interpolation_func(t, this.point_list, this.point_list.Count);    // 计算插值点
+                t += step;
+                //bezier_curves_points.Add(temp_point);
+                Shape.drawPoint(hdc, temp_point, ref g);
+            }
+            while (t <= 1 && this.point_list.Count > 1);    // 一个点的情况直接跳出.
+            return;
+   
+        }
+        private Point bezier_interpolation_func(float t, List<Point> points, int count)
+        {
+          
+            float[] part = new float[count];
+            float sum_x = 0, sum_y = 0;
+            for (int i = 0; i < count; i++)
+            {
+                int tmp;
+                int n_order = count - 1;    // 阶数
+                tmp = calc_combination_number(n_order, i);
+                sum_x += (float)(tmp * points[i].X * Math.Pow((1 - t), n_order - i) * Math.Pow(t, i));
+                sum_y += (float)(tmp * points[i].Y * Math.Pow((1 - t), n_order - i) * Math.Pow(t, i));
+            }
+            return new Point((int)sum_x, (int)sum_y);
+        }
+        private int calc_combination_number(int n, int k)
+        {
+            int[] result = new int[n + 1];
+            for (int i = 1; i <= n; i++)
+            {
+                result[i] = 1;
+                for (int j = i - 1; j >= 1; j--)
+                    result[j] += result[j - 1];
+                result[0] = 1;
+            }
+            return result[k];
+
         }
         public List<Point> get_point_list()
         {

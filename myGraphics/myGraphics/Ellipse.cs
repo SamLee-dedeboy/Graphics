@@ -26,7 +26,7 @@ namespace myGraphics
         */
         public Ellipse(Point start_point, Point end_point, double sine = 0, double cosine = 1)
         {
-            type = 4;
+            type = SEL.ELLIPSE;
             this.sine = sine;
             this.cosine = cosine;
             this.center = new Point((start_point.X + end_point.X) / 2, (start_point.Y + end_point.Y) / 2);
@@ -69,6 +69,7 @@ namespace myGraphics
         }
         public override void fill(Color color, ref Graphics g)
         {
+            this.color = color;
             Point start_point = Form1.ConvertPoint(new Point((int)(center.X - a), (int)(center.Y + b)));
             g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)a, 2*(float)b);
         }

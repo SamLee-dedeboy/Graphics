@@ -9,12 +9,13 @@ namespace myGraphics
     class Rectangle : Shape
     {
         private Point p1, p2, p3, p4;
+
         public Rectangle(Point start_point, Point end_point, double sine = 0, double cosine = 1)
         {
             center = new Point((start_point.X + end_point.X) / 2, (start_point.Y + end_point.Y) / 2);
             this.sine = sine;
             this.cosine = cosine;
-            type = 1;
+            type = SEL.RECTANGLE;
             start_point = Transform.Rotate(start_point,
                                             center,    //center
                                             -sine,    //sin(2pai - theta)
@@ -52,18 +53,21 @@ namespace myGraphics
         }
         public override void fill(Color color, ref Graphics g)
         {
-            if (p1.X < p3.X)
+            this.color = color;
+            if (fill_flag == true)
             {
-            
-                Point start_point = Form1.ConvertPoint(p1);
-                g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p2.X - p1.X, p1.Y - p4.Y);
+                if (p1.X < p3.X)
+                {
+
+                    Point start_point = Form1.ConvertPoint(p1);
+                    g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p2.X - p1.X, p1.Y - p4.Y);
+                }
+                else
+                {
+                    Point start_point = Form1.ConvertPoint(p4);
+                    g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p1.X - p4.X, p4.Y - p3.Y);
+                }
             }
-            else
-            {
-                Point start_point = Form1.ConvertPoint(p4);
-                g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p1.X - p4.X, p4.Y - p3.Y);
-            }
-            
         }
        
         public override Shape shift(int x, int y)

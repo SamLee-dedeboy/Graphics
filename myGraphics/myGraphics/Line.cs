@@ -17,7 +17,7 @@ namespace myGraphics
             second_point = p2;
             this.sine = (p1.Y - p2.Y) / Transform.distance(p1, p2);
             this.cosine = (p1.X - p2.X) / Transform.distance(p1, p2);
-            type = 0;
+            type = SEL.LINE;
             if (p1.X < p2.X)
             {
                 startPoint = p1;
