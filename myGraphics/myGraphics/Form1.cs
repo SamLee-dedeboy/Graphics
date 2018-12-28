@@ -169,7 +169,7 @@ namespace myGraphics
                                 manager.shapeList.RemoveAt(manager.shapeList.Count - 1);
                                 sel = last_sel;
                             }
-                            else if(sel == SEL.POLYGON)    //edit polygon
+                            else if(last_sel == SEL.POLYGON)    //edit polygon
                             {
                                 point_list = ((Polygon)temp_shape).get_point_list();
                                 for(int i = 0; i < point_list.Count; i++)
@@ -185,7 +185,7 @@ namespace myGraphics
                                 g.ReleaseHdc();
                                 
                             } 
-                            else if(sel == SEL.BEZIER)
+                            else if(last_sel == SEL.BEZIER)
                             {
                                 point_list = ((Bezier)temp_shape).get_point_list();
                                 for (int i = 0; i < point_list.Count; i++)
