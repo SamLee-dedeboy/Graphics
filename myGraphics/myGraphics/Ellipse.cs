@@ -71,7 +71,29 @@ namespace myGraphics
         {
             this.color = color;
             Point start_point = Form1.ConvertPoint(new Point((int)(center.X - a), (int)(center.Y + b)));
-            g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)a, 2*(float)b);
+            g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2 * (float)a, 2 * (float)b);
+            for (int i = 0; i < border_list.Count; i++)
+            {
+                int x = border_list[i].X;
+                int y = border_list[i].Y;
+                for(int j = 0; j < x; j+=2)
+                {
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(j + center.X, y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(-j + center.X, y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(j + center.X, -y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(-j + center.X, -y + center.Y), center, sine, cosine), ref g);
+
+                    g.ReleaseHdc();
+
+                }
+            }
+            g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2 * (float)a, 2 * (float)b);
         }
         public override Shape shift(int x, int y)
         {
@@ -205,6 +227,7 @@ namespace myGraphics
         }
         private void drawPoint(IntPtr hdc, int x, int y, ref Graphics g)
         {
+ 
             Shape.drawPoint(hdc, Transform.Rotate(new Point(x + center.X, y + center.Y), center, this.sine ,this.cosine), ref g);
             Shape.drawPoint(hdc, Transform.Rotate(new Point(-x + center.X, y + center.Y), center, this.sine, this.cosine), ref g);
             Shape.drawPoint(hdc, Transform.Rotate(new Point(x + center.X, -y + center.Y), center, this.sine, this.cosine), ref g);

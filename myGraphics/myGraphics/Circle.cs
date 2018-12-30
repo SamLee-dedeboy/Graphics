@@ -19,6 +19,27 @@ namespace myGraphics
         {
             this.color = color;
             Point start_point = Form1.ConvertPoint(new Point((int)(center.X - radius), (int)(center.Y + radius)));
+            for (int i = 0; i < border_list.Count; i++)
+            {
+                int x = border_list[i].X;
+                int y = border_list[i].Y;
+                for (int j = 0; j < x; j += 2)
+                {
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(j + center.X, y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(-j + center.X, y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(j + center.X, -y + center.Y), center, sine, cosine), ref g);
+                    g.ReleaseHdc();
+
+                    Shape.drawPoint(g.GetHdc(), Transform.Rotate(new Point(-j + center.X, -y + center.Y), center, sine, cosine), ref g);
+
+                    g.ReleaseHdc();
+
+                }
+            }
             g.FillEllipse(new SolidBrush(color), start_point.X, start_point.Y, 2*(float)radius, 2*(float)radius);
         }
         public override Shape shift(int x, int y)
@@ -79,17 +100,6 @@ namespace myGraphics
         }
         private void drawPoint(IntPtr hdc, int x, int y , ref Graphics g)
         {
-            /*
-            Shape.drawPoint(hdc, new Point(x, y), ref g);
-            Shape.drawPoint(hdc, new Point(-x, y), ref g);
-            Shape.drawPoint(hdc, new Point(x, -y), ref g);
-            Shape.drawPoint(hdc, new Point(-x, -y), ref g);
-
-            Shape.drawPoint(hdc, new Point(y, x), ref g);
-            Shape.drawPoint(hdc, new Point(-y, x), ref g);
-            Shape.drawPoint(hdc, new Point(y, -x), ref g);
-            Shape.drawPoint(hdc, new Point(-y, -x), ref g);
-            */
             Shape.drawPoint(hdc, new Point(x + center.X, y + center.Y), ref g);
             Shape.drawPoint(hdc, new Point(-x + center.X, y + center.Y), ref g);
             Shape.drawPoint(hdc, new Point(x + center.X, -y + center.Y), ref g);
@@ -99,17 +109,7 @@ namespace myGraphics
             Shape.drawPoint(hdc, new Point(-y + center.X, x + center.Y), ref g);
             Shape.drawPoint(hdc, new Point(y + center.X, -x + center.Y), ref g);
             Shape.drawPoint(hdc, new Point(-y + center.X, -x + center.Y), ref g);
-            /*
-            Shape.drawPoint(hdc, Transform.Shift(new Point(x, y), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(-x, y), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(x, -y), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(-x, -y), center.X, center.Y), ref g);
-
-            Shape.drawPoint(hdc, Transform.Shift(new Point(y, x), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(-y, x), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(y, -x), center.X, center.Y), ref g);
-            Shape.drawPoint(hdc, Transform.Shift(new Point(-y, -x), center.X, center.Y), ref g);
-            */
+        
 
         }
     }

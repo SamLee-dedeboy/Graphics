@@ -40,6 +40,7 @@ namespace myGraphics
         bool fill = false;
         double sine = 0, cosine = 1;
         Color fill_color = Color.Black;
+        int imageNum = 0;
         public Form1()
         {
          
@@ -646,6 +647,16 @@ namespace myGraphics
         {
             sel = SEL.RECTANGLE;
             cut = true;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            sel = SEL.DEFAULT;
+            imageNum++;
+            Bitmap bit = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.DrawToBitmap(bit, pictureBox1.ClientRectangle);
+            bit.Save(Application.StartupPath + "_image_" + imageNum + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+            bit.Dispose();
         }
 
         public static void drawCoordinate(PictureBox picturebox1, ref Graphics g)

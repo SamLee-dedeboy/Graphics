@@ -18,8 +18,7 @@ namespace myGraphics
             Point res = new Point((int)(center.X + (p.X - center.X) * cos - (p.Y - center.Y) * sin),
                              (int)(center.Y + (p.X - center.X) * sin + (p.Y - center.Y) * cos));
             return res;
-            // return new Point((int)(center.X + (p.X - center.X) * cos - (p.Y - center.Y) * sin),
-            //(int)(center.Y + (p.X - center.X)*sin + (p.Y-center.Y)*cos));
+
         }
 
 

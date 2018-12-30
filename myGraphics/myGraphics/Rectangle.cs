@@ -9,7 +9,7 @@ namespace myGraphics
     class Rectangle : Shape
     {
         private Point p1, p2, p3, p4;
-
+        private int range_x = 0, range_y = 0;
         public Rectangle(Point start_point, Point end_point, double sine = 0, double cosine = 1)
         {
             center = new Point((start_point.X + end_point.X) / 2, (start_point.Y + end_point.Y) / 2);
@@ -56,17 +56,21 @@ namespace myGraphics
             this.color = color;
             if (fill_flag == true)
             {
-                if (p1.X < p3.X)
+                List<Point> ptList = new List<Point>();
+                ptList.Add(Form1.ConvertPoint(p1));
+                ptList.Add(Form1.ConvertPoint(p2));
+                ptList.Add(Form1.ConvertPoint(p3));
+                ptList.Add(Form1.ConvertPoint(p4));
+                for(int i = 0; i <range_x; i++)
                 {
+                    for(int j = 0; j < range_y; j++)
+                    {
+                        Shape.drawPoint(g.GetHdc(), new Point(i, j), ref g);
+                        g.ReleaseHdc();
+                    }
+                }
+                g.FillPolygon(new SolidBrush(color), ptList.ToArray());
 
-                    Point start_point = Form1.ConvertPoint(p1);
-                    g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p2.X - p1.X, p1.Y - p4.Y);
-                }
-                else
-                {
-                    Point start_point = Form1.ConvertPoint(p4);
-                    g.FillRectangle(new SolidBrush(color), start_point.X, start_point.Y, p1.X - p4.X, p4.Y - p3.Y);
-                }
             }
         }
        
